@@ -10,4 +10,7 @@ contract ProxyV1 {
 
     receive() external payable {}
 
+    function implementation() external view returns (address) {
+        return implem;
+    }
 }
