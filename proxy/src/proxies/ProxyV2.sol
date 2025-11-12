@@ -2,6 +2,7 @@
 pragma solidity ^0.8.0;
 
 contract ProxyV2 {
+    // Define the storage slot for the implementation address
     bytes32 private constant IMPLEMENTATION_SLOT = bytes32(uint256(keccak256("eip1967.proxy.implementation")) - 1);
 
     constructor(address _implem) {
@@ -11,8 +12,9 @@ contract ProxyV2 {
     function _setImplementation(address newImplementation) internal {
         require(newImplementation != address(0), "ProxyV2: invalid implementation address");
 
+        bytes32 slot = IMPLEMENTATION_SLOT;
         assembly {
-            sstore(IMPLEMENTATION_SLOT, newImplementation)
+            sstore(slot, newImplementation)
         }
     }
 
@@ -21,8 +23,10 @@ contract ProxyV2 {
     }
 
     function getImplementation() public view returns (address implem) {
+        bytes32 slot = IMPLEMENTATION_SLOT;
+        
         assembly {
-            implem := sload(IMPLEMENTATION_SLOT)
+            implem := sload(slot)
         }
     }
 
