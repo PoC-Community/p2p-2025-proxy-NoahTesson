@@ -2,6 +2,7 @@
 pragma solidity ^0.8.0;
 
 contract ProxyV1 {
+    uint256 public count = 0;
     address public implem;
 
     constructor(address _implem) {
@@ -24,7 +25,7 @@ contract ProxyV1 {
                     revert(add(32, returnData), returndata_size)
                 }
             } else {
-                revert("Delegatecal falied withiout reason");
+                revert("Delegatecal falied without reason");
             }
         }
         assembly {
