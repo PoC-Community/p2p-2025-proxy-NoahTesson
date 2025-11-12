@@ -13,4 +13,22 @@ contract ProxyV1 {
     function implementation() external view returns (address) {
         return implem;
     }
+
+    fallback() external payable {
+        (bool success, bytes memory returnData) = implem.delegatecall(msg.data);
+
+        if (!success) {
+            if (returnData.length > 0) {
+                assembly {
+                    let returndata_size := mload(returnData)
+                    revert(add(32, returnData), returndata_size)
+                }
+            } else {
+                revert("Delegatecal falied withiout reason");
+            }
+        }
+        assembly {
+            return(add(returnData, 32), mload(returnData))
+        }
+    }
 }
