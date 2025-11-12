@@ -7,4 +7,7 @@ contract ProxyV1 {
     constructor(address _implem) {
         implem = _implem;
     }
+
+    receive() external payable {}
+
 }
